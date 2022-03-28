@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Numans');
+@import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
+
 *{
     margin: 0;
     padding: 0;
@@ -6,7 +8,7 @@
     font-family: 'Numans', sans-serif;
 }
 body{
-    background-image: url("kackars.jpg");
+    background-image: url("img/kackars.jpg");
     background-repeat: no-repeat;
 }
 .container{
@@ -84,4 +86,13 @@ input{
 }
 .a:hover{
     text-decoration: underline;
+}
+.location{
+    font-family: 'Twinkle Star', cursive;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10px;
+    left: 8px;
 }
