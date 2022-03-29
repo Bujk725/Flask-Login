@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <title>Yapılacak Listesi</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
 </head>
 
 <body>
@@ -18,20 +18,22 @@
                     <h1>Giriş</h1>
                 </div>
                 <div class="card-body">
-                    <div>
-                        <i class="fa-solid fa-heading "></i>
-                        <input type="text" class="list-title" name="list-title" placeholder="Liste Başlık">
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" class="username" name="username" placeholder="Kullanıcı Adı">
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" class="password" name="password" placeholder="Parola">
-                    </div>
-                    <button type="submit" class="login-btn" name="login-btn">Giriş Yap</button>
+                    <form method="post"> 
+                        <div>
+                            <i class="fa-solid fa-heading "></i>
+                            <input type="text" class="list-title" name="list-title" placeholder="Liste Başlık" required>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" class="username" name="username" placeholder="Kullanıcı Adı" required>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" class="password" name="password" placeholder="Parola">
+                        </div>
+                        <button type="submit" class="login-btn" name="login-btn">Giriş Yap</button>
                 </div>
+                </form>
                 <div class="card-footer">
                     <div><a href="/register" class="register a">Yeni Liste Oluştur</a></div>
                     <br>
