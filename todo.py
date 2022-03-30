@@ -18,25 +18,16 @@ mysql = MySQL(app)
 @app.route("/", methods = ["GET", "POST"])
 def index():
     if request.method == "POST":
-        title = request.form.get("list-title")
         username = request.form.get("username")
         password = request.form.get("password")
         sorgu = "SELECT * FROM users WHERE username = %s and password = %s"
-        sorgu2 = "SELECT * FROM todos WHERE userId = %s and title = %s"
         cursor = mysql.connection.cursor()
         result = cursor.execute(sorgu, (username, password))
-        veri = cursor.fetchone()
-        try:
-            result2 = cursor.execute(sorgu2, (veri["id"], title))
-            if (result and result2) > 0:
-                return redirect(url_for("todos"))
-            else:
-                return render_template("index.html")
-        except:
-            if (result and result2) > 0:
-                return redirect(url_for("todos"))
-            else:
-                return render_template("index.html")
+
+        if (result) > 0:
+            return redirect(url_for("todos"))
+        
+        return render_template("index.html")
         
     else:
         return render_template("index.html")
@@ -45,6 +36,27 @@ def index():
 def todos():
     return render_template("todos.html")
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        print("deneme")
+        username = request.form.get("username")
+        name = request.form.get("name")
+        firstname = request.form.get("firstname")
+        password = request.form.get("password")
+        confirm = request.form.get("password_confirm")
+        email = request.form.get("email")
+        if password == confirm:
+            sorgu = "INSERT INTO users(username,name,lastname,password,email) VALUES(%s,%s,%s,%s,%s)"
+            cursor = mysql.connection.cursor()
+            cursor.execute(sorgu,(username, name, firstname, password, email))
+            mysql.connection.commit()
+            return redirect(url_for("index"))
+        else:
+            return render_template("register.html")
+    else:
+        print("get")
+        return render_template("register.html")
 
 if __name__ == "__main__":
     app.run(debug =True)
