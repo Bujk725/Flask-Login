@@ -15,26 +15,32 @@ app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
 
+app.secret_key = b"sadasld02!"
+
 @app.route("/", methods = ["GET", "POST"])
 def index():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+        list_title = request.form.get("list_title")
         sorgu = "SELECT * FROM users WHERE username = %s and password = %s"
+        #sorgu2 = "SELECT * FROM users_todo WHERE userID = %s and todoID = %s"
         cursor = mysql.connection.cursor()
         result = cursor.execute(sorgu, (username, password))
-
+        # data = cursor.fetchone()
+        # result2 = cursor.execute(sorgu2, (data["id"], list_title))
         if (result) > 0:
-            return redirect(url_for("todos"))
+            session["username"] = username
+            return redirect(url_for("dashboard"))
         
         return render_template("index.html")
         
     else:
         return render_template("index.html")
 
-@app.route("/todos", methods=["GET", "POST"])
-def todos():
-    return render_template("todos.html")
+@app.route("/dashboard", methods=["GET", "POST"])
+def dashboard():
+    return render_template("dashboard.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

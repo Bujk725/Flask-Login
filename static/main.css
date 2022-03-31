@@ -8,7 +8,7 @@
     font-family: 'Numans', sans-serif;
 }
 body{
-    background-image: url("img/kackars.jpg");
+    background-image: url("img/landscape.jpg");
     background-repeat: no-repeat;
 }
 .container{
@@ -21,7 +21,18 @@ body{
 .card{
     border-radius: 10px;
     width: 370px;
-    height: 500px;
+    height: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.card_register{
+    border-radius: 10px;
+    width: 370px;
+    height: 530px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -32,11 +43,6 @@ body{
 h1{
     margin-bottom: 20px;
     font-size: 40px;
-}
-input{
-    margin-bottom: 10px;
-    overflow: hidden;
-    font-size: 20px;
 }
 .fa-heading, .fa-user, .fa-lock{
     width: 50px;
@@ -54,7 +60,7 @@ input{
     border: none;
     height: 38px;
     padding: .375rem .75rem;
-    width: 280px;
+    width: 245px;
     border-radius: 0 10px 10px 0;
     font-size: 13px;
     margin-bottom: 20px;
@@ -95,4 +101,51 @@ input{
     position: absolute;
     bottom: 10px;
     left: 8px;
+}
+
+/*bootstarp*/
+.form-control{
+    width: 72% !important;
+    display: inline-block !important;
+
+}
+.navbar-expand-lg .navbar-collapse {
+    justify-content: space-between !important;
+}
+
+.navbar{
+    padding: 0.5rem 0 0.8rem 0.5rem;
+}
+
+.my-lg-0 {
+    position: absolute;
+    right: 0.1rem;
+    top: 0.9rem;
+}
+
+/*dashboard*/
+.dash_container{
+    height: 100%;
+    align-content: center;
+}
+.list{
+    margin: 20px;
+}
+.list_body{
+    border-radius: 10px;
+    width: 70%;
+    height: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.list-group-item{
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+.list-group-item:first-child{
+    border-radius: 10px 10px 0 0;
 }
