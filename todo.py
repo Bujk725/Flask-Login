@@ -15,7 +15,7 @@ app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
 
-app.secret_key = b"sadasld02!"
+app.secret_key = "sadasld02!"
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -48,7 +48,7 @@ def register():
         print("deneme")
         username = request.form.get("username")
         name = request.form.get("name")
-        firstname = request.form.get("firstname")
+        lastname = request.form.get("lastname")
         password = request.form.get("password")
         confirm = request.form.get("password_confirm")
         email = request.form.get("email")
