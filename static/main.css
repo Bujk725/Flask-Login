@@ -17,7 +17,7 @@
 
   /*========== İndex ==========*/ 
 
-#index {
+#index, #register {
   background-image: url("img/kackars.jpg");
   background-repeat: no-repeat;
 }
@@ -50,13 +50,22 @@
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
 }
+.forget_card_register {
+  height: 429px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
 h1 {
   margin-bottom: 20px;
   font-size: 40px;
 }
-.fa-heading,
-.fa-user,
-.fa-lock {
+
+.fa-solid{
   width: 50px;
   height: 38px;
   float: left;
@@ -67,6 +76,7 @@ h1 {
   color: black;
   border-radius: 10px 0 0 10px;
 }
+
 input {
   outline: none;
   border: none;

@@ -2,18 +2,20 @@
 {% block body %}
 
 <body id="register">
+    
     <div class="container">
-        <div class="card_register">
+        <div class="forget_card_register">
             <div class="card-container">
                 <div class="card-header">
-                    <h1>Giriş</h1>
+                    <h1>Parola Sıfırlama</h1>
+                    {% if message == 1 %}
+                        <script>alert("Böyle bir kullanıcı bulunmuyor!")</script>
+                    {% elif message == 2 %}
+                        <script>alert("Bu kullanıcıda parola bulunmuyor")</script>
+                    {% endif %}
                 </div>
                 <div class="card-body">
                     <form method="post">
-                        <!-- <div>
-                            <i class="fa-solid fa-heading "></i>
-                            <input type="text" class="list-title" name="list_title" placeholder="Liste Başlık" required>
-                        </div> -->
                         <div>
                             <i class="fa-solid fa-user"></i>
                             <input type="text" class="register_username" name="username" placeholder="Kullanıcı Adı"
@@ -28,24 +30,15 @@
                             <input type="text" class="lastname" name="lastname" placeholder="Soyadınız" required>
                         </div>
                         <div>
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" class="register_password" name="password" placeholder="Parola">
-                        </div>
-                        <div>
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" class="password_confirm" name="password_confirm"
-                                placeholder="Parola Doğrula">
-                        </div>
-                        <div>
                             <i class="fa-solid fa-at"></i>
                             <input type="email" class="email" name="email" placeholder="E-Posta" required>
                         </div>
-                        <button type="submit" class="login-btn" name="login-btn">Kayıt Ol</button>
+                        <button type="submit" style="width:125px; height:44px" class="login-btn" name="forget-btn">Parola Sıfırla</button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="location">Kaçkar Dağı/Rize</div>
+        <div class="location">Kaçkar Dağı</div>
     </div>
 </body>
 {% endblock %}

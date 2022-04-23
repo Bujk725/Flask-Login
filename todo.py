@@ -24,17 +24,27 @@ def index():
         password = request.form.get("password")
         list_title = request.form.get("list_title")
         sorgu = "SELECT * FROM users WHERE username = %s and password = %s"
-        #sorgu2 = "SELECT * FROM users_todo WHERE userID = %s and todoID = %s"
+        sorgu2 = "SELECT * FROM users_todo WHERE userID = %s and todoID"
         cursor = mysql.connection.cursor()
         result = cursor.execute(sorgu, (username, password))
-        # data = cursor.fetchone()
+        data = cursor.fetchone()
+        cursor.close()
         # result2 = cursor.execute(sorgu2, (data["id"], list_title))
-        if (result) > 0:
-            session["username"] = username
-            return redirect(url_for("dashboard"))
-        
-        return render_template("index.html")
-        
+        if(list_title):
+            pass
+        else:
+
+            if (result) > 0:
+                session["name"] = data["name"][0].upper()
+                session["lastname"] = data["lastname"][0].upper()
+                session["name2"] = data["name"].capitalize()
+                session["lastname2"] = data["lastname"].capitalize()
+                session["login"] = True
+                session["password"] = False
+                return redirect(url_for("dashboard"))
+            
+            return render_template("index.html")
+            
     else:
         return render_template("index.html")
 
@@ -45,7 +55,6 @@ def dashboard():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        print("deneme")
         username = request.form.get("username")
         name = request.form.get("name")
         lastname = request.form.get("lastname")
@@ -55,14 +64,41 @@ def register():
         if password == confirm:
             sorgu = "INSERT INTO users(username,name,lastname,password,email) VALUES(%s,%s,%s,%s,%s)"
             cursor = mysql.connection.cursor()
-            cursor.execute(sorgu,(username, name, firstname, password, email))
+            cursor.execute(sorgu,(username, name, lastname, password, email))
             mysql.connection.commit()
+            cursor.close()
             return redirect(url_for("index"))
         else:
             return render_template("register.html")
     else:
-        print("get")
         return render_template("register.html")
 
+@app.route("/logout")
+def logout():
+    return redirect(url_for("index"))
+    session.clear()
+
+
+@app.route("/forget", methods = ["GET","POST"])
+def forget():
+    if request.method == "POST":
+        username = request.form.get("username")
+        name = request.form.get("name")
+        lastname = request.form.get("lastname")
+        email = request.form.get("email")
+        sorgu = "SELECT * FROM users WHERE username = %s AND name = %s AND lastname = %s AND email = %s"
+        cursor = mysql.connection.cursor()
+        result = cursor.execute(sorgu,(username,name,lastname,email))
+        data = cursor.fetchone()
+        if(result > 0):
+            if (data["password"] == ""):
+                return render_template("forget.html", message=2)
+            elif (data["password"]):
+                session["password"] = data["password"]
+                return redirect(url_for("index"))
+        else:
+            return render_template("forget.html", message = 1)
+    else:
+        return render_template("forget.html")
 if __name__ == "__main__":
     app.run(debug =True)

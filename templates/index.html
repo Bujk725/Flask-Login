@@ -7,6 +7,11 @@
             <div class="card-container">
                 <div class="card-header">
                     <h1>Giriş</h1>
+                    {% if session["password"] %}
+                        <script>
+                            alert({{session["password"]}})
+                        </script>
+                    {% endif %}
                 </div>
                 <div class="card-body">
                     <form method="post">

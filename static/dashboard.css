@@ -153,6 +153,7 @@ footer{
     width: calc(100% / 3 - 15px);
     padding: 15px 20px;
     background-color: #4DA3FF;
+    box-shadow: 1px 1px;
 }
 
 .users_table, .todolist_table{
