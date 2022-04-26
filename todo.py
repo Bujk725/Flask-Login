@@ -4,7 +4,20 @@ from flask import Flask, render_template, flash, redirect, url_for, session, log
 from flask_mysqldb import MySQL
 # pip install passlib komutuyla indiriyoruz
 from passlib.hash import sha256_crypt
+from functools import wraps 
+
+
 app = Flask(__name__)
+
+# Kullanıcı Giriş Dekoratörleri
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "login" in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for("index"))
+    return decorated_function
 
 # mysql bağlantı ayarları
 app.config["MYSQL_HOST"] = "localhost"
@@ -17,6 +30,8 @@ mysql = MySQL(app)
 
 app.secret_key = "sadasld02!"
 
+
+# Giriş Sayfası
 @app.route("/", methods = ["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -24,16 +39,14 @@ def index():
         password = request.form.get("password")
         list_title = request.form.get("list_title")
         sorgu = "SELECT * FROM users WHERE username = %s and password = %s"
-        sorgu2 = "SELECT * FROM users_todo WHERE userID = %s and todoID"
         cursor = mysql.connection.cursor()
         result = cursor.execute(sorgu, (username, password))
         data = cursor.fetchone()
+
         cursor.close()
-        # result2 = cursor.execute(sorgu2, (data["id"], list_title))
         if(list_title):
             pass
         else:
-
             if (result) > 0:
                 session["name"] = data["name"][0].upper()
                 session["lastname"] = data["lastname"][0].upper()
@@ -41,17 +54,38 @@ def index():
                 session["lastname2"] = data["lastname"].capitalize()
                 session["login"] = True
                 session["password"] = False
+                session["id"] = data["id"]
                 return redirect(url_for("dashboard"))
-            
+                
             return render_template("index.html")
             
     else:
         return render_template("index.html")
 
+# Kontrol Paneli
 @app.route("/dashboard", methods=["GET", "POST"])
+@login_required
 def dashboard():
-    return render_template("dashboard.html")
+    cursor = mysql.connection.cursor()
+    sorgu = "SELECT todos.* FROM users_todo JOIN todos ON users_todo.todoID = todos.id JOIN users ON users_todo.userID = users.id WHERE userID = %s"
+    sorgu2 = "SELECT * FROM users_todo WHERE userID = %s"
+    result2 = cursor.execute(sorgu2,(session["id"],))
+    todo2 = cursor.fetchall()
+    sorgu3 = "SELECT * FROM users_todo JOIN users ON users_todo.userID = users.id JOIN todos ON todos.id= users_todo.todoID WHERE todoID = %s"
+    result3 = cursor.execute(sorgu3,(todo2[0]["todoID"],))
+    todo3 = cursor.fetchall()
+    for i in todo3:
+        print(i)
+    result = cursor.execute(sorgu,(session["id"],))
+    if result > 0:
+        todo = cursor.fetchall()
+        cursor.close()
+        return render_template("dashboard.html", todo = todo, todo2 = todo3)
+    else:
+        return render_template("dashboard.html")
 
+
+# Kullanıcı Kayıt
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -73,12 +107,14 @@ def register():
     else:
         return render_template("register.html")
 
+# Çıkış yapma
 @app.route("/logout")
 def logout():
-    return redirect(url_for("index"))
     session.clear()
+    return redirect(url_for("index"))
 
 
+# Şifre sıfırlama
 @app.route("/forget", methods = ["GET","POST"])
 def forget():
     if request.method == "POST":
@@ -100,5 +136,6 @@ def forget():
             return render_template("forget.html", message = 1)
     else:
         return render_template("forget.html")
+
 if __name__ == "__main__":
     app.run(debug =True)

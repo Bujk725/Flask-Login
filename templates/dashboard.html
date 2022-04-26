@@ -40,29 +40,19 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <div class="list-icon"><i class="fa-solid fa-list"></i></div>
-                                <div class="list-text">Beautiful Soup</div>
+                            <a href="create_article.html">
+                                <div class="list-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                                <div class="list-text">Yeni Liste Oluştur</div>
                             </a>
                         </li>
+                        {% for i in todo %}
                         <li>
                             <a href="#">
                                 <div class="list-icon"><i class="fa-solid fa-list"></i></div>
-                                <div class="list-text">SQL Tekrarlama</div>
+                                <div class="list-text">{{i.title}}</div>
                             </a>
                         </li>
-                        <li>
-                            <a href="#">
-                                <div class="list-icon"><i class="fa-solid fa-list"></i></div>
-                                <div class="list-text">Sarıoğlu Sefer</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <div class="list-icon"><i class="fa-solid fa-list"></i></div>
-                                <div class="list-text">Django Clone</div>
-                            </a>
-                        </li>
+                        {% endfor %}                        
                     </ul>
                 </section>
                 <footer>
@@ -115,21 +105,16 @@
                             <thead>
                                 <tr>
                                     <th>Yapılacak Listesi</th>
+                                    <th>id</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for i in todo %}
                                 <tr>
-                                    <td>Beautiful Soup Veri Çekme Projesi</td>
+                                    <td>{{i.title}}</td>
+                                    <td>{{i.id}}</td>
                                 </tr>
-                                <tr>
-                                    <td>SQL Tekrarlama Uygulaması</td>
-                                </tr>
-                                <tr>
-                                    <td>Sarıoğlu Sefer Web</td>
-                                </tr>
-                                <tr>
-                                    <td>Django İnstagram Clone</td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -150,38 +135,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>adems</td>
-                                    <td>Beautiful Soup Veri Çekme Projesi</td>
-                                </tr>
-                                <tr>
-                                    <td>yusuf58</td>
-                                    <td>SQL Tekrarlama Uygulaması</td>
-                                </tr>
-                                <tr>
-                                    <td>mustafa34</td>
-                                    <td>Sarıoğlu Sefer Web</td>
-                                </tr>
-                                <tr>
-                                    <td>mustafa34</td>
-                                    <td>Django İnstagram Clone</td>
-                                </tr>
-                                <tr>
-                                    <td>adems</td>
-                                    <td>Beautiful Soup Veri Çekme Projesi</td>
-                                </tr>
-                                <tr>
-                                    <td>yusuf58</td>
-                                    <td>SQL Tekrarlama Uygulaması</td>
-                                </tr>
-                                <tr>
-                                    <td>mustafa34</td>
-                                    <td>Sarıoğlu Sefer Web</td>
-                                </tr>
-                                <tr>
-                                    <td>mustafa34</td>
-                                    <td>Django İnstagram Clone</td>
-                                </tr>
+                                {% for i in todo2 %}
+                                    <tr>
+                                        <td>{{i.username}}</td>
+                                        <td>{{i.title}}</td>
+                                    </tr>
+                                {% endfor %}
+                                
                             </tbody>
                         </table>
                     </div>
