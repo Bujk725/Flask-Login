@@ -28,26 +28,26 @@
                 <section class="list">
                     <ul>
                         <li>
-                            <a href="dashboard.html">
+                            <a href="/dashboard">
                                 <div class="list-icon"><i class="fa-solid fa-gauge-high"></i></div>
                                 <div class="list-text">Kontrol Paneli</div>
                             </a>
                         </li>
                         <li>
-                            <a href="#users_table">
+                            <a href="/dashboard#users_table">
                                 <div class="list-icon"><i class="fa-solid fa-users"></i></div>
                                 <div class="list-text">Ekip</div>
                             </a>
                         </li>
                         <li>
-                            <a href="create_article.html">
+                            <a href="#">
                                 <div class="list-icon"><i class="fa-solid fa-gauge-high"></i></div>
                                 <div class="list-text">Yeni Liste Oluştur</div>
                             </a>
                         </li>
                         {% for i in todo %}
                         <li>
-                            <a href="#">
+                            <a href="/todos/{{i.id}}">
                                 <div class="list-icon"><i class="fa-solid fa-list"></i></div>
                                 <div class="list-text">{{i.title}}</div>
                             </a>
@@ -70,85 +70,88 @@
                 </footer>
             </div>
         </div>
+                
         <div class="content" id="content">
-            <div class="content-users_container">
-                <div class="content-users_container_title">
-                    <span class="content-users_container_icon"><i class='bx bx-category'></i></span>
-                    <span class="content-users_container_text">Kategoriler</span>
-                </div>
-                <div class="boxes">
-                    <div class="box box1">
-                        <i style="font-size: 35px;" class="fa-solid fa-code-fork"></i>
-                        <div style="font-size: 25px; font-weight: 500;">İş</div>
-                        <div style="font-size: 40px;">450</div>
-                    </div>
-                    <div style="background-color: #FFE6AC;" class="box box2">
-                        <i style="font-size: 35px;" class="fa-solid fa-house-laptop"></i>
-                        <div style="font-size: 25px; font-weight: 500;">Serbes Çalışma</div>
-                        <div style="font-size: 40px;">100</div>
-                    </div>
-                    <div style="background-color: #E7D1FC;" class="box box3">
-                        <i style="font-size: 35px;" class="fa-solid fa-lightbulb"></i>
-                        <div style="font-size: 25px; font-weight: 500;">Hobi</div>
-                        <div style="font-size: 40px;">10</div>
-                    </div>
-                </div>
-            </div>
-            <div class="todo_list">
-                <div class="todo_list_container">
-                    <div class="todo_list_container_title">
-                        <span class="todo_list_container_icon"><i class="fa-solid fa-table"></i></span>
-                        <span class="todo_list_container_text">Yapılacak Listeler</span>
-                    </div>
-                    <div class="todolist_table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Yapılacak Listesi</th>
-                                    <th>id</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for i in todo %}
-                                <tr>
-                                    <td>{{i.title}}</td>
-                                    <td>{{i.id}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="users_container">
+            {% block right %}
                 <div class="content-users_container">
                     <div class="content-users_container_title">
-                        <span class="content-users_container_icon"><i class="fa-solid fa-users"></i></span>
-                        <span class="content-users_container_text">Ekip</span>
+                        <span class="content-users_container_icon"><i class='bx bx-category'></i></span>
+                        <span class="content-users_container_text">Kategoriler</span>
                     </div>
-                    <div class="users_table" id="users_table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Kullanıcı Adı</th>
-                                    <th>Yapılacak Listesi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for i in todo2 %}
-                                    <tr>
-                                        <td>{{i.username}}</td>
-                                        <td>{{i.title}}</td>
-                                    </tr>
-                                {% endfor %}
-                                
-                            </tbody>
-                        </table>
+                    <div class="boxes">
+                        <div class="box box1">
+                            <i style="font-size: 35px;" class="fa-solid fa-code-fork"></i>
+                            <div style="font-size: 25px; font-weight: 500;">İş</div>
+                            <div style="font-size: 40px;">450</div>
+                        </div>
+                        <div style="background-color: #FFE6AC;" class="box box2">
+                            <i style="font-size: 35px;" class="fa-solid fa-house-laptop"></i>
+                            <div style="font-size: 25px; font-weight: 500;">Serbes Çalışma</div>
+                            <div style="font-size: 40px;">100</div>
+                        </div>
+                        <div style="background-color: #E7D1FC;" class="box box3">
+                            <i style="font-size: 35px;" class="fa-solid fa-lightbulb"></i>
+                            <div style="font-size: 25px; font-weight: 500;">Hobi</div>
+                            <div style="font-size: 40px;">10</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
+                <div class="todo_list">
+                    <div class="todo_list_container">
+                        <div class="todo_list_container_title">
+                            <span class="todo_list_container_icon"><i class="fa-solid fa-table"></i></span>
+                            <span class="todo_list_container_text">Yapılacak Listeler</span>
+                        </div>
+                        <div class="todolist_table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Yapılacak Listesi</th>
+                                        <th>id</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in todo %}
+                                    <tr>
+                                        <td>{{i.title}}</td>
+                                        <td>{{i.id}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="users_container">
+                    <div class="content-users_container">
+                        <div class="content-users_container_title">
+                            <span class="content-users_container_icon"><i class="fa-solid fa-users"></i></span>
+                            <span class="content-users_container_text">Ekip</span>
+                        </div>
+                        <div class="users_table" id="users_table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Kullanıcı Adı</th>
+                                        <th>Yapılacak Listesi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in todo3 %}
+                                        <tr>
+                                            <td>{{i.username}}</td>
+                                            <td>{{i.title}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}    
         </div>
+        
 
 </body>
 

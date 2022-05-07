@@ -1,4 +1,4 @@
-
+# pip install flask komutuyla indiriyoruz
 from flask import Flask, render_template, flash, redirect, url_for, session, logging, request
 # pip install flask_mysqldb komutuyla indiriyoruz
 from flask_mysqldb import MySQL
@@ -67,23 +67,54 @@ def index():
 @login_required
 def dashboard():
     cursor = mysql.connection.cursor()
-    sorgu = "SELECT todos.* FROM users_todo JOIN todos ON users_todo.todoID = todos.id JOIN users ON users_todo.userID = users.id WHERE userID = %s"
+    sorgu = "SELECT todos.*, users.username FROM users_todo JOIN todos ON users_todo.todoID = todos.id JOIN users ON users_todo.userID = users.id WHERE userID = %s"
     sorgu2 = "SELECT * FROM users_todo WHERE userID = %s"
+    sorgu3 = "SELECT * FROM users_todo JOIN users ON users_todo.userID = users.id JOIN todos ON todos.id= users_todo.todoID WHERE todoID = %s"
+
     result2 = cursor.execute(sorgu2,(session["id"],))
     todo2 = cursor.fetchall()
-    sorgu3 = "SELECT * FROM users_todo JOIN users ON users_todo.userID = users.id JOIN todos ON todos.id= users_todo.todoID WHERE todoID = %s"
     result3 = cursor.execute(sorgu3,(todo2[0]["todoID"],))
     todo3 = cursor.fetchall()
-    for i in todo3:
-        print(i)
     result = cursor.execute(sorgu,(session["id"],))
+    
     if result > 0:
         todo = cursor.fetchall()
+        print(todo)
         cursor.close()
-        return render_template("dashboard.html", todo = todo, todo2 = todo3)
+        return render_template("dashboard.html", todo = todo, todo3 = todo3)
     else:
         return render_template("dashboard.html")
 
+
+# Detay Sayfası
+@app.route("/todos/<string:id>")
+@login_required
+def detail(id):
+    cursor = mysql.connection.cursor()
+    sorgu2 = "SELECT todos.*, users.username FROM users_todo JOIN todos ON users_todo.todoID = todos.id JOIN users ON users_todo.userID = users.id WHERE userID = %s"
+    result2 = cursor.execute(sorgu2,(session["id"],))
+    todo2 = cursor.fetchall()
+    sorgu = "SELECT * FROM todos WHERE id=%s"
+    result = cursor.execute(sorgu,(id,))
+    if result > 0:
+        todo = cursor.fetchone()
+        sorgu1 = "SELECT * FROM todos WHERE title = %s"
+        result1 = cursor.execute(sorgu1,(todo["title"],))
+        todo1 = cursor.fetchall()
+        cursor.close()
+        return render_template("todos.html", todo1 = todo1, todo = todo2)
+    else:
+        return render_template("todos.html")
+
+
+# Liste Silme
+@app.route("/del/<string:id>")
+def delete(id):
+    sorgu = "DELETE FROM todos WHERE id = %s"
+    cursor = mysql.connection.cursor()
+    cursor.execute(sorgu,(id,))
+    mysql.connection.commit()
+    return render_template("todos.html")
 
 # Kullanıcı Kayıt
 @app.route("/register", methods=["GET", "POST"])
