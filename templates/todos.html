@@ -1,18 +1,28 @@
 {% extends "dashboard.html" %}
+{% block list %}
+        {% for i in todo2 %}
+            <li>
+                <a href="/todos/{{i.todo_head_id}}">
+                    <div class="list-icon"><i class="fa-solid fa-list"></i></div>
+                    <div class="list-text">{{i.title}}</div>
+                </a>
+            </li>
+        {% endfor %}
+    {% endblock %}  
 {% block right %}
     <div class="details" style="margin: 20px">
             
             <table>
                 <thead>
                     <tr>
-                        <th><h1>{{todo1[0].title}}</h1></th>
+                        <th><h1>{{todo[0].title}}</h1></th>
                         <th>Durum</th>
                         <th>Sil</th>
                         <th>Düzenle</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for t in todo1 %}
+                    {% for t in todo %}
                         <tr>
                             <td>{{t.content}}</td>
                             <td style="text-align: center;">{{t.complete}}</td>

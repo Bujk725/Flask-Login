@@ -45,14 +45,16 @@
                                 <div class="list-text">Yeni Liste Oluştur</div>
                             </a>
                         </li>
-                        {% for i in todo %}
-                        <li>
-                            <a href="/todos/{{i.id}}">
-                                <div class="list-icon"><i class="fa-solid fa-list"></i></div>
-                                <div class="list-text">{{i.title}}</div>
-                            </a>
-                        </li>
-                        {% endfor %}                        
+                        {% block list %}
+                            {% for i in todo %}
+                            <li>
+                                <a href="/todos/{{i.todo_head_id}}">
+                                    <div class="list-icon"><i class="fa-solid fa-list"></i></div>
+                                    <div class="list-text">{{i.title}}</div>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        {% endblock %}                        
                     </ul>
                 </section>
                 <footer>
@@ -82,17 +84,17 @@
                         <div class="box box1">
                             <i style="font-size: 35px;" class="fa-solid fa-code-fork"></i>
                             <div style="font-size: 25px; font-weight: 500;">İş</div>
-                            <div style="font-size: 40px;">450</div>
+                            <div style="font-size: 40px;">{{iş}}</div>
                         </div>
                         <div style="background-color: #FFE6AC;" class="box box2">
                             <i style="font-size: 35px;" class="fa-solid fa-house-laptop"></i>
                             <div style="font-size: 25px; font-weight: 500;">Serbes Çalışma</div>
-                            <div style="font-size: 40px;">100</div>
+                            <div style="font-size: 40px;">{{freelancer}}</div>
                         </div>
                         <div style="background-color: #E7D1FC;" class="box box3">
                             <i style="font-size: 35px;" class="fa-solid fa-lightbulb"></i>
                             <div style="font-size: 25px; font-weight: 500;">Hobi</div>
-                            <div style="font-size: 40px;">10</div>
+                            <div style="font-size: 40px;">{{hobi}}</div>
                         </div>
                     </div>
                 </div>
@@ -107,14 +109,16 @@
                                 <thead>
                                     <tr>
                                         <th>Yapılacak Listesi</th>
-                                        <th>id</th>
+                                        <th>İd</th>
+                                        <th>Kategori</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for i in todo %}
                                     <tr>
                                         <td>{{i.title}}</td>
-                                        <td>{{i.id}}</td>
+                                        <td>{{i.todo_head_id}}</td>
+                                        <td>{{i.category}}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -137,7 +141,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for i in todo3 %}
+                                    {% for i in todo2 %}
                                         <tr>
                                             <td>{{i.username}}</td>
                                             <td>{{i.title}}</td>

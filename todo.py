@@ -67,21 +67,37 @@ def index():
 @login_required
 def dashboard():
     cursor = mysql.connection.cursor()
-    sorgu = "SELECT todos.*, users.username FROM users_todo JOIN todos ON users_todo.todoID = todos.id JOIN users ON users_todo.userID = users.id WHERE userID = %s"
-    sorgu2 = "SELECT * FROM users_todo WHERE userID = %s"
-    sorgu3 = "SELECT * FROM users_todo JOIN users ON users_todo.userID = users.id JOIN todos ON todos.id= users_todo.todoID WHERE todoID = %s"
-
-    result2 = cursor.execute(sorgu2,(session["id"],))
-    todo2 = cursor.fetchall()
-    result3 = cursor.execute(sorgu3,(todo2[0]["todoID"],))
-    todo3 = cursor.fetchall()
+    sorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id WHERE userid = %s"
+    sorgu2 = "SELECT todo_head.title, userID, users.username FROM `users_todo_head` JOIN users ON users_todo_head.userID = users.id JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id WHERE todo_head_id IN (SELECT todo_head_id from users_todo_head WHERE userID = %s) and userID != %s"
     result = cursor.execute(sorgu,(session["id"],))
-    
     if result > 0:
         todo = cursor.fetchall()
         print(todo)
+        resutl2 = cursor.execute(sorgu2,(session["id"],session["id"]))
+        todo2 = cursor.fetchall()
+
+        # Kategori sayısı
+        freelancerSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'Serbes Çalışma' "
+        freelancerSonuç = cursor.execute(freelancerSorgu,(session["id"],))
+        freelancer = cursor.fetchall()
+        print(len(freelancer))
+
+        hobiSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'Hobi' "
+        gobiSonuç = cursor.execute(hobiSorgu,(session["id"],))
+        hobi = cursor.fetchall()
+
+        print(len(hobi))
+
+
+        işSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'İş' "
+        işSonuç = cursor.execute(işSorgu,(session["id"],))
+        iş = cursor.fetchall()
+
+        print(type(len(iş)))
+
+
         cursor.close()
-        return render_template("dashboard.html", todo = todo, todo3 = todo3)
+        return render_template("dashboard.html", todo = todo, todo2 = todo2, freelancer = len(freelancer), hobi = len(hobi), iş = len(iş))
     else:
         return render_template("dashboard.html")
 
@@ -91,30 +107,29 @@ def dashboard():
 @login_required
 def detail(id):
     cursor = mysql.connection.cursor()
-    sorgu2 = "SELECT todos.*, users.username FROM users_todo JOIN todos ON users_todo.todoID = todos.id JOIN users ON users_todo.userID = users.id WHERE userID = %s"
-    result2 = cursor.execute(sorgu2,(session["id"],))
-    todo2 = cursor.fetchall()
-    sorgu = "SELECT * FROM todos WHERE id=%s"
+    sorgu = "SELECT * FROM todo JOIN todo_head ON todo.todo_head_id = todo_head.id WHERE todo_head_id = %s"
+    sorgu2 = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id WHERE userid = %s"
     result = cursor.execute(sorgu,(id,))
     if result > 0:
-        todo = cursor.fetchone()
-        sorgu1 = "SELECT * FROM todos WHERE title = %s"
-        result1 = cursor.execute(sorgu1,(todo["title"],))
-        todo1 = cursor.fetchall()
+        todo = cursor.fetchall()
+        print(todo)
+        cursor.execute(sorgu2,(session["id"],))
+        todo2 = cursor.fetchall()
         cursor.close()
-        return render_template("todos.html", todo1 = todo1, todo = todo2)
+        return render_template("todos.html",todo = todo, todo2 = todo2)
     else:
         return render_template("todos.html")
 
 
 # Liste Silme
 @app.route("/del/<string:id>")
+@login_required
 def delete(id):
-    sorgu = "DELETE FROM todos WHERE id = %s"
     cursor = mysql.connection.cursor()
+    sorgu = "DELETE FROM todo WHERE id = %s"
     cursor.execute(sorgu,(id,))
     mysql.connection.commit()
-    return render_template("todos.html")
+    return redirect(url_for("detail(id,)"))
 
 # Kullanıcı Kayıt
 @app.route("/register", methods=["GET", "POST"])
