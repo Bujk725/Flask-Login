@@ -117,6 +117,7 @@ footer{
 .content{
     width: 83%;
     float: right;
+    height: 100%;
 }
 .content-users_container, .todo_list_container{
     margin: 60px;

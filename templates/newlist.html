@@ -1,0 +1,31 @@
+{% extends "dashboard.html" %}
+{% block right %}
+<div class="card-body">
+    <form method="post">
+        <div class="form-group">
+          <label style="font-size: 30px;" for="title">Başlık</label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Başlık Giriniz">
+          <small class="form-text text-muted">Büyük küçük harfe duyarlıdır!</small>
+        </div>
+        <div class="form-group" >
+            <label style="font-size: 30px;" for="category">Kategori</label>
+            <select class="form-control" id="category" name="category">
+              <option>İş</option>
+              <option>Serbest Çalışmak</option>
+              <option>Hobi</option>
+            </select>
+        <div class="form-group" >
+          <label style="font-size: 30px;" for="title">Ekip Arkadaşın</label>
+          <input type="text" class="form-control" id="teamUsername" name="teamUsername" placeholder="Kullanıcı Adı Giriniz">
+          <small class="form-text text-muted">Büyük küçük harfe duyarlıdır!<br>Kullanıcı adı arasına virgül koyunuz!</small>
+
+        </div>
+            <div style="margin-top: 10px;">
+                <button style="float: right;" type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+
+        
+      </form>
+</div>
+{% endblock %}

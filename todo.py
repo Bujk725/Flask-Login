@@ -72,28 +72,26 @@ def dashboard():
     result = cursor.execute(sorgu,(session["id"],))
     if result > 0:
         todo = cursor.fetchall()
-        print(todo)
         resutl2 = cursor.execute(sorgu2,(session["id"],session["id"]))
         todo2 = cursor.fetchall()
 
-        # Kategori sayısı
+        # Kategori çeşit sayısı
+
         freelancerSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'Serbes Çalışma' "
         freelancerSonuç = cursor.execute(freelancerSorgu,(session["id"],))
         freelancer = cursor.fetchall()
-        print(len(freelancer))
+
 
         hobiSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'Hobi' "
         gobiSonuç = cursor.execute(hobiSorgu,(session["id"],))
         hobi = cursor.fetchall()
 
-        print(len(hobi))
 
 
         işSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'İş' "
         işSonuç = cursor.execute(işSorgu,(session["id"],))
         iş = cursor.fetchall()
 
-        print(type(len(iş)))
 
 
         cursor.close()
@@ -103,7 +101,7 @@ def dashboard():
 
 
 # Detay Sayfası
-@app.route("/todos/<string:id>")
+@app.route("/todos/<string:id>" )
 @login_required
 def detail(id):
     cursor = mysql.connection.cursor()
@@ -112,7 +110,6 @@ def detail(id):
     result = cursor.execute(sorgu,(id,))
     if result > 0:
         todo = cursor.fetchall()
-        print(todo)
         cursor.execute(sorgu2,(session["id"],))
         todo2 = cursor.fetchall()
         cursor.close()
@@ -182,6 +179,48 @@ def forget():
             return render_template("forget.html", message = 1)
     else:
         return render_template("forget.html")
+
+# Yeni liste oluşturma
+@app.route("/newlist", methods = ["GET","POST"])
+@login_required
+def newlist():
+    cursor = mysql.connection.cursor()
+    sorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id WHERE userid = %s"
+    result = cursor.execute(sorgu,(session["id"],))
+    todo = cursor.fetchall()
+    if request.method == "POST":
+        title = request.form.get("title")
+        kategori = request.form.get("category")
+        team = request.form.get("teamUsername")
+        x = team.split(',')
+
+        sorgu2 = "INSERT INTO todo_head(title,category) VALUES(%s,%s)"
+        result2 = cursor.execute(sorgu2,(title,kategori))
+        mysql.connection.commit()
+
+        sorgu3 = "SELECT id FROM todo_head WHERE title = %s"
+        resut3 = cursor.execute(sorgu3,(title,))
+        data = cursor.fetchone()
+
+        sorgu4 = "INSERT INTO users_todo_head(userID,todo_head_id) VALUES(%s,%s)"
+        result4 = cursor.execute(sorgu4,(session["id"], data["id"]))
+        mysql.connection.commit()
+
+        idlist = []
+        for i in x:
+            sorgu5 = "SELECT id FROM users WHERE username = %s "
+            cursor.execute(sorgu5,(i,))
+            ID = cursor.fetchone()
+            idlist.append(ID["id"])
+
+        for a in idlist:
+            sorgu6 = "INSERT INTO users_todo_head(userID,todo_head_id) VALUES(%s,%s)"
+            result6 = cursor.execute(sorgu6,(a, data["id"]))
+            mysql.connection.commit()   
+        cursor.close()
+        return render_template("newlist.html", todo = todo)
+    else:
+        return render_template("newlist.html", todo = todo)
 
 if __name__ == "__main__":
     app.run(debug =True)
