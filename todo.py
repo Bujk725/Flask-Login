@@ -38,9 +38,9 @@ def index():
         username = request.form.get("username")
         password = request.form.get("password")
         list_title = request.form.get("list_title")
-        sorgu = "SELECT * FROM users WHERE username = %s and password = %s"
+        sorgu = "SELECT * FROM users WHERE username = %s"
         cursor = mysql.connection.cursor()
-        result = cursor.execute(sorgu, (username, password))
+        result = cursor.execute(sorgu, (username,))
         data = cursor.fetchone()
 
         cursor.close()
@@ -48,14 +48,15 @@ def index():
             pass
         else:
             if (result) > 0:
-                session["name"] = data["name"][0].upper()
-                session["lastname"] = data["lastname"][0].upper()
-                session["name2"] = data["name"].capitalize()
-                session["lastname2"] = data["lastname"].capitalize()
-                session["login"] = True
-                session["password"] = False
-                session["id"] = data["id"]
-                return redirect(url_for("dashboard"))
+                if  sha256_crypt.verify(password, data["password"]): 
+                    session["name"] = data["name"][0].upper()
+                    session["lastname"] = data["lastname"][0].upper()
+                    session["name2"] = data["name"].capitalize()
+                    session["lastname2"] = data["lastname"].capitalize()
+                    session["login"] = True
+                    session["password"] = False
+                    session["id"] = data["id"]
+                    return redirect(url_for("dashboard"))
                 
             return render_template("index.html")
             
@@ -101,7 +102,7 @@ def dashboard():
 
 
 # Detay Sayfası
-@app.route("/todos/<string:id>" )
+@app.route("/todos/<string:id>", methods=["GET", "POST"])
 @login_required
 def detail(id):
     cursor = mysql.connection.cursor()
@@ -123,10 +124,62 @@ def detail(id):
 @login_required
 def delete(id):
     cursor = mysql.connection.cursor()
+    sorgu2 = "SELECT todo_head_id FROM todo where id = %s"
+    cursor.execute(sorgu2,(id,))
+    result = cursor.fetchone()
+    result = result["todo_head_id"]
     sorgu = "DELETE FROM todo WHERE id = %s"
     cursor.execute(sorgu,(id,))
     mysql.connection.commit()
-    return redirect(url_for("detail(id,)"))
+    cursor.close()
+    return redirect(url_for("detail", id = result))
+
+
+# Liste Tamamlama
+@app.route("/edit/<string:id>")
+@login_required
+def edit(id):
+    cursor = mysql.connection.cursor()
+    sorgu = "SELECT todo_head_id FROM todo where id = %s"
+    cursor.execute(sorgu,(id,))
+    result = cursor.fetchone()
+    result = result["todo_head_id"]
+    sorgu2 = "SELECT complete FROM todo WHERE id = %s "
+    cursor.execute(sorgu2,(id,))
+    result2 = cursor.fetchone()
+    result2 = result2["complete"]
+    result2 = not(result2)
+    sorgu3 = "UPDATE todo SET complete = %s WHERE id = %s"
+    cursor.execute(sorgu3,(result2,id))
+    mysql.connection.commit()
+    cursor.close()
+    return redirect(url_for("detail", id = result))
+ 
+# Görev ve Kullanıcı Ekle
+@app.route("/addTask/<string:id>", methods=["GET","POST"])
+@login_required
+def addTask(id):
+    usernameAndTask = request.form.get("usernameAndTask")
+    cursor = mysql.connection.cursor()
+    if(usernameAndTask.startswith("@")):
+        usernameAndTask = usernameAndTask.split(",")
+        print(usernameAndTask)
+        for i in usernameAndTask:
+            x = i.replace("@","")
+            sorgu = "SELECT id FROM users WHERE username = %s"
+            cursor.execute(sorgu,(x,))
+            result = cursor.fetchone()
+            result = result["id"]
+            sorgu2 = "INSERT INTO users_todo_head(userID, todo_head_id) VALUES(%s,%s)"
+            cursor.execute(sorgu2,(result,id))
+            mysql.connection.commit()
+    else:
+        sorgu = "INSERT INTO todo(todo_head_id, content, complete) VALUES(%s,%s, 0)"
+        cursor.execute(sorgu,(id,usernameAndTask))
+        mysql.connection.commit()
+        cursor.close()
+    return redirect(url_for("detail", id = id))
+
 
 # Kullanıcı Kayıt
 @app.route("/register", methods=["GET", "POST"])
@@ -139,6 +192,7 @@ def register():
         confirm = request.form.get("password_confirm")
         email = request.form.get("email")
         if password == confirm:
+            password = sha256_crypt.encrypt(password)
             sorgu = "INSERT INTO users(username,name,lastname,password,email) VALUES(%s,%s,%s,%s,%s)"
             cursor = mysql.connection.cursor()
             cursor.execute(sorgu,(username, name, lastname, password, email))
