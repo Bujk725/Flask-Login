@@ -78,7 +78,7 @@ def dashboard():
 
         # Kategori çeşit sayısı
 
-        freelancerSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'Serbes Çalışma' "
+        freelancerSorgu = "SELECT * FROM users_todo_head JOIN todo_head ON users_todo_head.todo_head_id = todo_head.id where userID = %s and todo_head.category = 'Serbest Çalışma' "
         freelancerSonuç = cursor.execute(freelancerSorgu,(session["id"],))
         freelancer = cursor.fetchall()
 
@@ -111,12 +111,20 @@ def detail(id):
     result = cursor.execute(sorgu,(id,))
     if result > 0:
         todo = cursor.fetchall()
+        print(len(todo))
         cursor.execute(sorgu2,(session["id"],))
         todo2 = cursor.fetchall()
         cursor.close()
-        return render_template("todos.html",todo = todo, todo2 = todo2)
+        return render_template("todos.html",todo = todo, todo2 = todo2)   
     else:
-        return render_template("todos.html")
+        sorgu3 = "DELETE FROM todo_head WHERE id = %s"
+        cursor.execute(sorgu3,(id,))
+        mysql.connection.commit()
+        sorgu4 = "DELETE FROM users_todo_head WHERE todo_head_id = %s"
+        cursor.execute(sorgu4,(id,))
+        mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for("dashboard"))
 
 
 # Liste Silme
@@ -163,7 +171,6 @@ def addTask(id):
     cursor = mysql.connection.cursor()
     if(usernameAndTask.startswith("@")):
         usernameAndTask = usernameAndTask.split(",")
-        print(usernameAndTask)
         for i in usernameAndTask:
             x = i.replace("@","")
             sorgu = "SELECT id FROM users WHERE username = %s"
@@ -246,6 +253,7 @@ def newlist():
         title = request.form.get("title")
         kategori = request.form.get("category")
         team = request.form.get("teamUsername")
+        content = request.form.get("firstodo")
         x = team.split(',')
 
         sorgu2 = "INSERT INTO todo_head(title,category) VALUES(%s,%s)"
@@ -259,18 +267,22 @@ def newlist():
         sorgu4 = "INSERT INTO users_todo_head(userID,todo_head_id) VALUES(%s,%s)"
         result4 = cursor.execute(sorgu4,(session["id"], data["id"]))
         mysql.connection.commit()
-
-        idlist = []
-        for i in x:
-            sorgu5 = "SELECT id FROM users WHERE username = %s "
-            cursor.execute(sorgu5,(i,))
-            ID = cursor.fetchone()
-            idlist.append(ID["id"])
-
-        for a in idlist:
-            sorgu6 = "INSERT INTO users_todo_head(userID,todo_head_id) VALUES(%s,%s)"
-            result6 = cursor.execute(sorgu6,(a, data["id"]))
-            mysql.connection.commit()   
+        if team:
+            idlist = []
+            for i in x:
+                sorgu5 = "SELECT id FROM users WHERE username = %s "
+                cursor.execute(sorgu5,(i,))
+                ID = cursor.fetchone()
+                if ID != None :
+                    idlist.append(ID["id"])
+            if idlist:
+                for a in idlist:
+                    sorgu6 = "INSERT INTO users_todo_head(userID,todo_head_id) VALUES(%s,%s)"
+                    result6 = cursor.execute(sorgu6,(a, data["id"]))
+                    mysql.connection.commit()   
+        sorgu7 = "INSERT INTO todo(todo_head_id, content, complete) VALUES(%s,%s, 0)"
+        cursor.execute(sorgu7,(data["id"],content))
+        mysql.connection.commit()
         cursor.close()
         return render_template("newlist.html", todo = todo)
     else:
