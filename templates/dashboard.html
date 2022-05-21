@@ -10,16 +10,9 @@
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Kontrol Paneli</title>
-    <SCRIPT LANGUAGE="JavaScript">
-        function formla(gelen)
-        {
-        document.benim_formum.action=gelen;
-        document.benim_formum.submit();
-        }
-      </SCRIPT>
 </head>
 
-<body>
+<body style="background-color: var(--body-color);">
     <div class="dashboard_container">
         <div class="sidebar">
             <div class="side">
@@ -79,7 +72,7 @@
             </div>
         </div>
                 
-        <div class="content" id="content">
+        <div style="background-color: var(--body-color);" class="content" id="content">
             {% block right %}
                 <div class="content-users_container">
                     <div class="content-users_container_title">
@@ -92,12 +85,12 @@
                             <div style="font-size: 25px; font-weight: 500;">İş</div>
                             <div style="font-size: 40px;">{{iş}}</div>
                         </div>
-                        <div style="background-color: #FFE6AC;" class="box box2">
+                        <div class="box box2">
                             <i style="font-size: 35px;" class="fa-solid fa-house-laptop"></i>
                             <div style="font-size: 25px; font-weight: 500;">Serbest Çalışma</div>
                             <div style="font-size: 40px;">{{freelancer}}</div>
                         </div>
-                        <div style="background-color: #E7D1FC;" class="box box3">
+                        <div class="box box3">
                             <i style="font-size: 35px;" class="fa-solid fa-lightbulb"></i>
                             <div style="font-size: 25px; font-weight: 500;">Hobi</div>
                             <div style="font-size: 40px;">{{hobi}}</div>
@@ -165,12 +158,7 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <script>
-        function form(gelen){
-            document.form.action = gelen;
-            document.form.submit()
-        }  
-        </script>
+        <script src="../static/script.js"></script>
 </body>
 
 </html>

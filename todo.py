@@ -42,10 +42,27 @@ def index():
         cursor = mysql.connection.cursor()
         result = cursor.execute(sorgu, (username,))
         data = cursor.fetchone()
-
         cursor.close()
         if(list_title):
-            pass
+            cursor = mysql.connection.cursor()
+            sorgu2 = "SELECT * FROM users_todo_head WHERE userID = %s"
+            cursor.execute(sorgu2,(data["id"],))
+            result2 = cursor.fetchone()
+            if result2:
+                if result2["todo_head_id"] == int(list_title):
+                    session["name"] = data["name"][0].upper()
+                    session["lastname"] = data["lastname"][0].upper()
+                    session["name2"] = data["name"].capitalize()
+                    session["lastname2"] = data["lastname"].capitalize()
+                    session["login"] = True
+                    session["password"] = False
+                    session["id"] = data["id"]
+                    return redirect(url_for("detail", id = result2["todo_head_id"]))
+                else:
+                    print("b")
+                    return render_template("index.html")
+            else:
+                return render_template("index.html")
         else:
             if (result) > 0:
                 if  sha256_crypt.verify(password, data["password"]): 
@@ -111,7 +128,6 @@ def detail(id):
     result = cursor.execute(sorgu,(id,))
     if result > 0:
         todo = cursor.fetchall()
-        print(len(todo))
         cursor.execute(sorgu2,(session["id"],))
         todo2 = cursor.fetchall()
         cursor.close()

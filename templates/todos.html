@@ -34,18 +34,18 @@
                             <td>{{t.content}}</td>
                             <td style="text-align: center;">Tamamlanmadı</td>
                             {% endif %}
-                            <td style="text-align: center;"><a type="submit" href="/del/{{t.id}}"><i class="fa-solid fa-trash fa-lg" style="color: red;"></i></a></td>
+                            <td style="text-align: center;"><a type="submit" href="/del/{{t.id}}"><i class="fa-solid fa-trash fa-lg"></i></a></td>
                             <td style="text-align: center;"><a href="/edit/{{t.id}}"><i style="color: green;" class="fa-solid fa-check fa-xl"></i></a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
             <div>
-                <input required  type="text" style="margin-top: 20px;" name="usernameAndTask" id="usernameAndTask" class="form-control" placeholder="Kullanıcı adını veya görevi buraya yaz...">
+                <input required  type="text" style="margin-top: 20px;" name="usernameAndTask" id="usernameAndTask" class="form-control" placeholder="@kullanıcı adını veya görevi buraya yaz...">
                 <small class="form-text text-muted">Büyük küçük harfe duyarlıdır!<br>Kullanıcı adı başına @ işareti koyunuz. <br> Birden fazla kullanıcı arasına virgül koyunuz!</small>
             </div>
-            <button style="float: left; margin-top: 10px; color: white;" class="btn btn-danger fa-5x"><i class="fa-solid fa-square-plus"></i> Görevi Ekle</button>
-            <button style="float: right; margin-top: 10px;" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> Takım Arkadaşı Ekle</button>
+            <button style="float: left; margin-top: 10px; color: white;" class="btn btn-danger fa-5x danger"><i class="fa-solid fa-square-plus"></i> Görevi Ekle</button>
+            <button style="float: right; margin-top: 10px;" class="btn btn-primary primary"><i class="fa-solid fa-user-plus"></i> Takım Arkadaşı Ekle</button>
         </form>
         
         

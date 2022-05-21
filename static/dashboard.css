@@ -10,6 +10,20 @@
     --text-color: #707070;
     --abbreviated: #6f62fa;
     --hover-list-color: #0E4BF1;
+    --border-color: #e6e5e5;
+    --container_text: black;
+    --todo_list_icon: #0E4BF1;
+    --box1: #4DA3FF;
+    --box2: #FFE6AC;
+    --box3: #E7D1FC;
+    --box-color: #212529;
+    --table-even:#dddddd;
+    --table-odd: white;
+    --table-text: black;
+    --trash-color: red;
+    --danger: #dc3545;
+    --primary: #007bff;
+    --label: black;
 }
 
 /* ===== Aside ===== */
@@ -20,16 +34,41 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+html,body{
+    min-height: 100vh;
+}
 body{
     background-color: var(--body-color);
-
+    
+}
+body.dark{
+    --body-color: #242526;
+    --side-color: #242526;
+    --text-color: #ccc;
+    --abbreviated: #6f62fa;
+    --hover-list-color: #0E4BF1;
+    --border-color: #4D4C4C;
+    --container_text: #ccc;
+    --todo_list_icon: #3A3B3C;
+    --box1: #3A3B3C;
+    --box2: #3A3B3C;
+    --box3: #3A3B3C;
+    --box-color: #ccc;
+    --table-even:#242526;
+    --table-odd: #242526;
+    --table-text: #ccc;
+    --trash-color: gray;
+    --danger: #3A3B3C;
+    --primary: #3A3B3C;
+    --label: #ccc;
 }
 .dashboard_container{
     width: 100%;
-    height: 710px;
+    height: 100%;
     background-color: var(--body-color);
 }
 .sidebar{
+    border-right: 1px solid var(--border-color);
     width: 17%;
     height: 100%;
     background-color: var(--side-color);
@@ -63,6 +102,7 @@ header{
 }
 .name{
     font-size: 20px;
+    color: var(--text-color);
 }
 
 
@@ -97,7 +137,7 @@ a{
 section a, footer a, footer{
     color: var(--text-color);
     position: absolute;
-    left: 60px;
+    left: 34px;
 }
 .list-icon, .list-text{
     display: inline-block;
@@ -126,7 +166,7 @@ footer{
 .content-users_container_icon i, .todo_list_container_icon i{
     width: 35px;
     height: 35px;
-    background-color: #0E4BF1;
+    background-color: var(--todo_list_icon);
     color: white;
     display: inline-flex;
     justify-content: center;
@@ -138,6 +178,7 @@ footer{
 .content-users_container_text, .todo_list_container_text{
     font-size: 24px;
     font-weight: 500;
+    color: var(--container_text);
 }
 .boxes{
     display: flex;
@@ -153,8 +194,19 @@ footer{
     border-radius: 12px;
     width: calc(100% / 3 - 15px);
     padding: 15px 20px;
-    background-color: #4DA3FF;
     box-shadow: 1px 1px;
+}
+.box1{
+    background-color: var(--box1);
+    color: var(--box-color);
+}
+.box2{
+    color: var(--box-color);
+    background-color: var(--box2);
+}
+.box3{
+    color: var(--box-color);
+    background-color: var(--box3);
 }
 
 .users_table, .todolist_table{
@@ -174,5 +226,24 @@ td, th{
     padding: 8px;
 }
 tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: var(--table-even);
+    color: var(--table-text);
+}
+tr:nth-child(odd){
+    background-color: var(--table-odd);
+    color: var(--table-text);
+}
+.fa-trash{
+    color: var(--trash-color);
+}
+.danger{
+    background-color: var(--danger)!important;
+    border-color: var(--danger)!important;
+}
+.primary{
+    background-color: var(--primary)!important;
+    border-color: var(--primary)!important;
+}
+label{
+    color: var(--label);
 }
