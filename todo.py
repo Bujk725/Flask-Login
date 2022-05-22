@@ -59,7 +59,6 @@ def index():
                     session["id"] = data["id"]
                     return redirect(url_for("detail", id = result2["todo_head_id"]))
                 else:
-                    print("b")
                     return render_template("index.html")
             else:
                 return render_template("index.html")
@@ -246,16 +245,37 @@ def forget():
         cursor = mysql.connection.cursor()
         result = cursor.execute(sorgu,(username,name,lastname,email))
         data = cursor.fetchone()
+        session["userPassword"] = username
+        print(session["userPassword"])
         if(result > 0):
             if (data["password"] == ""):
                 return render_template("forget.html", message=2)
             elif (data["password"]):
                 session["password"] = data["password"]
-                return redirect(url_for("index"))
+                return redirect(url_for("newPassword"))
         else:
             return render_template("forget.html", message = 1)
     else:
         return render_template("forget.html")
+
+# Yeni Parola
+@app.route("/newPassword", methods = ["GET","POST"])
+def newPassword():
+    if request.method == "POST":
+        newPassword = request.form.get("new_password")
+        newPassword_confirm = request.form.get("new_confirm")
+        if newPassword == newPassword_confirm:
+            print(session["userPassword"])
+            crypt_password = sha256_crypt.encrypt(newPassword)
+            cursor = mysql.connection.cursor()
+            sorgu = "UPDATE users SET password = %s WHERE username = %s"
+            cursor.execute(sorgu,(crypt_password,session["userPassword"]))
+            mysql.connection.commit()
+            return redirect(url_for("index"))
+        else:
+            return render_template("newPassword.html")
+    else:
+        return render_template("newPassword.html")
 
 # Yeni liste oluşturma
 @app.route("/newlist", methods = ["GET","POST"])
