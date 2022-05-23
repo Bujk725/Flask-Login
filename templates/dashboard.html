@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
     <title>Kontrol Paneli</title>
 </head>
 
@@ -45,15 +45,15 @@
                             </a>
                         </li>
                         {% block list %}
-                            {% for i in todo %}
-                            <li>
-                                <a href="/todos/{{i.todo_head_id}}">
-                                    <div class="list-icon"><i class="fa-solid fa-list"></i></div>
-                                    <div class="list-text">{{i.title}}</div>
-                                </a>
-                            </li>
-                            {% endfor %}
-                        {% endblock %}                        
+                        {% for i in todo %}
+                        <li>
+                            <a href="/todos/{{i.todo_head_id}}">
+                                <div class="list-icon"><i class="fa-solid fa-list"></i></div>
+                                <div class="list-text">{{i.title}}</div>
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% endblock %}
                     </ul>
                 </section>
                 <footer>
@@ -71,93 +71,99 @@
                 </footer>
             </div>
         </div>
-                
+
         <div style="background-color: var(--body-color);" class="content" id="content">
             {% block right %}
+            <div class="content-users_container">
+                <div class="content-users_container_title">
+                    <span class="content-users_container_icon"><i class='bx bx-category'></i></span>
+                    <span class="content-users_container_text">Kategoriler</span>
+                </div>
+                <div class="boxes">
+                    <div class="box box1">
+                        <i style="font-size: 35px;" class="fa-solid fa-code-fork"></i>
+                        <div style="font-size: 25px; font-weight: 500;">İş</div>
+                        <div style="font-size: 40px;">{{iş}}</div>
+                    </div>
+                    <div class="box box2">
+                        <i style="font-size: 35px;" class="fa-solid fa-house-laptop"></i>
+                        <div style="font-size: 25px; font-weight: 500;">Serbest Çalışma</div>
+                        <div style="font-size: 40px;">{{freelancer}}</div>
+                    </div>
+                    <div class="box box3">
+                        <i style="font-size: 35px;" class="fa-solid fa-lightbulb"></i>
+                        <div style="font-size: 25px; font-weight: 500;">Hobi</div>
+                        <div style="font-size: 40px;">{{hobi}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="todo_list">
+                <div class="todo_list_container">
+                    <div class="todo_list_container_title">
+                        <span class="todo_list_container_icon"><i class="fa-solid fa-table"></i></span>
+                        <span class="todo_list_container_text">Yapılacak Listeler</span>
+                    </div>
+                    <div class="todolist_table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Yapılacak Listesi</th>
+                                    <th>İd</th>
+                                    <th>Kategori</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in todo %}
+                                <tr>
+                                    <td>{{i.title}}</td>
+                                    <td>{{i.todo_head_id}}</td>
+                                    <td>{{i.category}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="users_container">
                 <div class="content-users_container">
                     <div class="content-users_container_title">
-                        <span class="content-users_container_icon"><i class='bx bx-category'></i></span>
-                        <span class="content-users_container_text">Kategoriler</span>
+                        <span class="content-users_container_icon"><i class="fa-solid fa-users"></i></span>
+                        <span class="content-users_container_text">Ekip</span>
                     </div>
-                    <div class="boxes">
-                        <div class="box box1">
-                            <i style="font-size: 35px;" class="fa-solid fa-code-fork"></i>
-                            <div style="font-size: 25px; font-weight: 500;">İş</div>
-                            <div style="font-size: 40px;">{{iş}}</div>
-                        </div>
-                        <div class="box box2">
-                            <i style="font-size: 35px;" class="fa-solid fa-house-laptop"></i>
-                            <div style="font-size: 25px; font-weight: 500;">Serbest Çalışma</div>
-                            <div style="font-size: 40px;">{{freelancer}}</div>
-                        </div>
-                        <div class="box box3">
-                            <i style="font-size: 35px;" class="fa-solid fa-lightbulb"></i>
-                            <div style="font-size: 25px; font-weight: 500;">Hobi</div>
-                            <div style="font-size: 40px;">{{hobi}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="todo_list">
-                    <div class="todo_list_container">
-                        <div class="todo_list_container_title">
-                            <span class="todo_list_container_icon"><i class="fa-solid fa-table"></i></span>
-                            <span class="todo_list_container_text">Yapılacak Listeler</span>
-                        </div>
-                        <div class="todolist_table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Yapılacak Listesi</th>
-                                        <th>İd</th>
-                                        <th>Kategori</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for i in todo %}
-                                    <tr>
-                                        <td>{{i.title}}</td>
-                                        <td>{{i.todo_head_id}}</td>
-                                        <td>{{i.category}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="users_table" id="users_table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı Adı</th>
+                                    <th>Yapılacak Listesi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in todo2 %}
+                                <tr>
+                                    <td>{{i.username}}</td>
+                                    <td>{{i.title}}</td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="users_container">
-                    <div class="content-users_container">
-                        <div class="content-users_container_title">
-                            <span class="content-users_container_icon"><i class="fa-solid fa-users"></i></span>
-                            <span class="content-users_container_text">Ekip</span>
-                        </div>
-                        <div class="users_table" id="users_table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Kullanıcı Adı</th>
-                                        <th>Yapılacak Listesi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for i in todo2 %}
-                                        <tr>
-                                            <td>{{i.username}}</td>
-                                            <td>{{i.title}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            {% endblock %}    
+            </div>
+            {% endblock %}
         </div>
-        
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
         <script src="../static/script.js"></script>
 </body>
 
